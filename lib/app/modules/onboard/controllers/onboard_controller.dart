@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:vegetable/app/modules/home/views/home_view.dart';
+import 'package:vegetable/app/routes/app_pages.dart';
 
 class OnboardController extends GetxController {
   @override
@@ -10,7 +10,7 @@ class OnboardController extends GetxController {
   @override
   void onReady() {
     Future.delayed(Duration(seconds: 2), () {
-      Get.offAll(() => HomeView(), transition: Transition.fade);
+      Get.offAndToNamed(Routes.HOME);
     });
     super.onReady();
   }

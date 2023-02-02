@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vegetable/ui/app_colors.dart';
-import 'package:vegetable/ui/text_styles.dart';
-import 'package:vegetable/ui/ui_helpers.dart';
 
+import '../../../../../ui/app_colors.dart';
 import '../../../../../ui/constants.dart';
+import '../../../../../ui/text_styles.dart';
+import '../../../../../ui/ui_helpers.dart';
 
 class AddedToCartView extends StatelessWidget {
   const AddedToCartView({super.key});
+
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () {

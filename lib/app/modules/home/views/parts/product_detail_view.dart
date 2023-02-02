@@ -1,16 +1,44 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vegetable/app/modules/product_details/views/parts/added_to_cart_view.dart';
-import 'package:vegetable/ui/app_colors.dart';
-import 'package:vegetable/ui/text_styles.dart';
+import 'package:vegetable/app/modules/home/views/parts/added_to_cart_view.dart';
+import 'package:vegetable/database/db.dart';
+import 'package:vegetable/models/vegetable_data.dart';
 
-import '../../../../components/buttons.dart';
-import '../../../../ui/constants.dart';
-import '../controllers/product_details_controller.dart';
+import '../../../../../components/buttons.dart';
+import '../../../../../ui/app_colors.dart';
+import '../../../../../ui/constants.dart';
+import '../../../../../ui/text_styles.dart';
+import '../../controllers/home_controller.dart';
 
-class ProductDetailsView extends GetView<ProductDetailsController> {
+class ProductDetailView extends StatefulWidget {
+  final VegetableData vegetables;
+  ProductDetailView({super.key, required this.vegetables});
+
+  @override
+  State<ProductDetailView> createState() => _ProductDetailViewState();
+}
+
+class _ProductDetailViewState extends State<ProductDetailView> {
+  final controller = Get.isRegistered<HomeController>()
+      ? Get.find<HomeController>()
+      : Get.put(HomeController());
+
+  // open database
+  DB database = DB();
+
+  @override
+  void initState() {
+    database.open();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    database.db!.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -25,7 +53,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    "Rp 2.500 Per/Kg",
+                    "Rp ${widget.vegetables.price} Per/Kg",
                     style: GoogleFonts.poppins(
                       textStyle: bodyStyle.copyWith(color: KTextColor),
                     ),
@@ -35,7 +63,16 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                 Expanded(
                   child: GestureDetector(
                     child: PrimaryButton(),
-                    onTap: () {
+                    onTap: () async {
+                      // add to cart
+                      database.db!.rawInsert(
+                          'INSERT INTO cart (name, image, quantity, price) VALUES (?, ?, ?, ?);',
+                          [
+                            widget.vegetables.name,
+                            widget.vegetables.image,
+                            1,
+                            widget.vegetables.price
+                          ]);
                       Get.to(() => AddedToCartView());
                     },
                   ),
@@ -66,17 +103,22 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
           physics: BouncingScrollPhysics(),
           children: [
             Container(
+              width: double.infinity,
+              height: 250,
               padding: EdgeInsets.all(16),
-              child: Image.asset(
-                '${Constants.imagePath}brocolli_detail.png',
-                fit: BoxFit.cover,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  '${Constants.imagePath}${widget.vegetables.image}',
+                  fit: BoxFit.fitWidth,
+                ),
               ),
             ),
             // title
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                "Brocolli",
+                "${widget.vegetables.name}",
                 style: GoogleFonts.poppins(
                   textStyle: headingStyle.copyWith(color: KTextColor),
                 ),
@@ -86,7 +128,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                "Broccoli is a green vegetable that is part of the cabbage family. It is a good source of vitamin C and vitamin K. It is also a good source of fiber, folate, potassium, and vitamin A.",
+                "${widget.vegetables.name} is a green vegetable that is part of the cabbage family. It is a good source of vitamin C and vitamin K. It is also a good source of fiber, folate, potassium, and vitamin A.",
                 style: GoogleFonts.poppins(
                   textStyle: bodyStyle.copyWith(color: KTextColor),
                 ),
@@ -202,4 +244,3 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
     );
   }
 }
-

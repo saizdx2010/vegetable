@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:vegetable/ui/app_colors.dart';
 import 'package:vegetable/ui/constants.dart';
@@ -16,7 +14,6 @@ class BottomBar extends StatelessWidget {
     return Container(
       color: Colors.white,
       height: 70,
-
       child: Row(
         children: [
           GestureDetector(
