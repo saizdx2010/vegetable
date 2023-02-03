@@ -11,6 +11,11 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   // search
   TextEditingController searchController = TextEditingController();
 
+  double totalPrice = 0;
+
+  String paymentMethod = 'Gopay';
+  String activePaymentMethod = 'Gopay';
+
   @override
   void onInit() {
     tabController = TabController(vsync: this, length: 3);
@@ -26,7 +31,28 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   @override
   void onClose() {}
 
+  // search
+  void search() {
+    if (searchController.text.isNotEmpty) {
+      List<VegetableData> searchVegetables = [];
+      allVegetables.forEach((element) {
+        if (element.name!
+            .toLowerCase()
+            .contains(searchController.text.toLowerCase())) {
+          searchVegetables.add(element);
+        }
+      });
+      allVegetables = searchVegetables;
+    } else if (searchController.text.isEmpty) {
+      allVegetables = allVegetables;
+    }
+    update();
+  }
 
 
-
+  // payment method
+  void changePaymentMethod(String method) {
+    paymentMethod = method;
+    update();
+  }
 }

@@ -5,6 +5,7 @@ import 'package:vegetable/app/modules/home/views/home_view.dart';
 import 'package:vegetable/app/modules/home/views/parts/product_detail_view.dart';
 import 'package:vegetable/app/routes/app_pages.dart';
 import 'package:vegetable/models/vegetable_data.dart';
+import 'package:vegetable/ui/ui_helpers.dart';
 
 import '../../../ui/app_colors.dart';
 import '../../../ui/text_styles.dart';
@@ -19,20 +20,23 @@ class SearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GetBuilder<HomeController>(
-        init: HomeController(),
-        initState: (_) {},
-        builder: (_) {
-          return Column(
-            children: [
-              SearchBar(
-                controller: controller,
-              ),
-              ResultWidget(controller: controller),
-            ],
-          );
-        },
+    return SafeArea(
+      child: Scaffold(
+        body: GetBuilder<HomeController>(
+          init: HomeController(),
+          initState: (_) {},
+          builder: (_) {
+            return Column(
+              children: [
+                verticalSpaceRegular,
+                SearchBar(
+                  controller: controller,
+                ),
+                ResultWidget(controller: controller),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -53,7 +57,7 @@ class SearchBar extends StatelessWidget {
       children: [
         // icon back
         Container(
-          margin: EdgeInsets.only(top: 90, left: 16),
+          margin: EdgeInsets.only(left: 16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -69,7 +73,7 @@ class SearchBar extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            margin: EdgeInsets.only(top: 90, left: 16, right: 16),
+            margin: EdgeInsets.only(left: 16, right: 16),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
@@ -91,11 +95,12 @@ class SearchBar extends StatelessWidget {
                     controller: controller.searchController,
                     // search all vegetables
                     onChanged: (value) {
-                      allVegetables = allVegetables
-                          .where((element) =>
-                              element.name!.toLowerCase().contains(value))
-                          .toList();
-                      controller.update();
+                      // allVegetables = allVegetables
+                      //     .where((element) =>
+                      //         element.name!.toLowerCase().contains(value))
+                      //     .toList();
+                      // controller.update();
+                      controller.search();
                     },
                     decoration: InputDecoration(
                       border: InputBorder.none,

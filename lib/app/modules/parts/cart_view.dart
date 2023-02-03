@@ -11,6 +11,7 @@ import '../../../ui/app_colors.dart';
 import '../../../ui/constants.dart';
 import '../../../ui/text_styles.dart';
 import '../../../ui/ui_helpers.dart';
+import '../home/controllers/home_controller.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -20,7 +21,11 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
-  double total = 0;
+  // controller
+  final controller = Get.isRegistered<HomeController>()
+      ? Get.find<HomeController>()
+      : Get.put(HomeController());
+  // double total = 0;
   @override
   void initState() {
     super.initState();
@@ -40,7 +45,7 @@ class _CartViewState extends State<CartView> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    "Total Rp  ${total}",
+                    "Total Rp  ${controller.totalPrice}",
                     style: GoogleFonts.poppins(
                       textStyle: bodyStyle.copyWith(color: KTextColor),
                     ),
@@ -120,7 +125,7 @@ class _CartViewState extends State<CartView> {
               builder:
                   (BuildContext context, AsyncSnapshot<List<Cart>> snapshot) {
                 if (!snapshot.hasData) {
-                  total = 0;
+                  controller.totalPrice = 0;
                   return Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(KPrimaryColor),
@@ -139,7 +144,7 @@ class _CartViewState extends State<CartView> {
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         children: snapshot.data!.map((cart) {
-                          total = snapshot.data!.fold(
+                          controller.totalPrice = snapshot.data!.fold(
                             0,
                             (previousValue, element) =>
                                 previousValue +
@@ -205,7 +210,8 @@ class _CartViewState extends State<CartView> {
                                                 DatabaseHelper.instance
                                                     .updateCart(cart);
                                                 setState(() {
-                                                  total = snapshot.data!.fold(
+                                                  controller.totalPrice =
+                                                      snapshot.data!.fold(
                                                     0,
                                                     (previousValue, element) =>
                                                         previousValue +
@@ -246,7 +252,8 @@ class _CartViewState extends State<CartView> {
                                               DatabaseHelper.instance
                                                   .updateCart(cart);
                                               setState(() {
-                                                total = snapshot.data!.fold(
+                                                controller.totalPrice =
+                                                    snapshot.data!.fold(
                                                   0,
                                                   (previousValue, element) =>
                                                       previousValue +

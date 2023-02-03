@@ -35,6 +35,9 @@ class DatabaseHelper {
     CREATE TABLE transaction (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       price DOUBLE NOT NULL,
+      paymentMethod TEXT,
+      date TEXT,
+
     );
 
 
@@ -56,6 +59,13 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.insert('cart', cart.toJson());
   }
+
+  // // insert transaction
+  // Future<int> insertTransaction(Transaction transaction) async {
+  //   Database db = await instance.database;
+  //   return await db.insert('transaction', transaction.toJson());
+  // }
+
 
   Future<int> updateCart(Cart cart) async {
     Database db = await instance.database;
