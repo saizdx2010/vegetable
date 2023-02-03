@@ -12,6 +12,7 @@ import '../../../../../models/cart.dart';
 import '../../../../../ui/app_colors.dart';
 import '../../../../../ui/constants.dart';
 import '../../../../../ui/text_styles.dart';
+import '../../../../routes/app_pages.dart';
 import '../../controllers/home_controller.dart';
 
 class ProductDetailView extends StatefulWidget {
@@ -93,7 +94,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
             // ios icon back
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Get.back();
+              Get.toNamed(Routes.HOME);
             },
           ),
         ),

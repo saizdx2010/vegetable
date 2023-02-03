@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vegetable/app/modules/home/views/parts/product_detail_view.dart';
+import 'package:vegetable/app/modules/parts/search_view.dart';
 import 'package:vegetable/components/bottom_bar.dart';
 import 'package:vegetable/ui/app_colors.dart';
 import 'package:vegetable/ui/ui_helpers.dart';
@@ -51,44 +52,49 @@ class HomeView extends GetView<HomeController> {
                   ),
                   // input for search
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 90, left: 16, right: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(1),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Icon(
-                          Icons.search,
-                          color: KPrimaryColor,
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => SearchView());
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 90, left: 16, right: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(1),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
                         ),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Search",
-                            hintStyle: GoogleFonts.poppins(
-                              textStyle: bodyStyle.copyWith(
-                                color: KTextColor.withOpacity(0.5),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Icon(
+                            Icons.search,
+                            color: KPrimaryColor,
+                          ),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            enabled: false,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Search",
+                              hintStyle: GoogleFonts.poppins(
+                                textStyle: bodyStyle.copyWith(
+                                  color: KTextColor.withOpacity(0.5),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -101,7 +107,7 @@ class HomeView extends GetView<HomeController> {
               indicatorSize: TabBarIndicatorSize.label,
               tabs: [
                 createTabBar("Vegetables"),
-                createTabBar("Fruit"),
+                createTabBar("Fruits"),
                 createTabBar("Dry Fruits"),
               ],
             ),

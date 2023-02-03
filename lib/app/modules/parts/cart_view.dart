@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vegetable/app/modules/parts/payment_view.dart';
+import 'package:vegetable/app/routes/app_pages.dart';
 import 'package:vegetable/models/cart.dart';
 
 import '../../../components/buttons.dart';
@@ -19,6 +20,7 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
+  double total = 0;
   @override
   void initState() {
     super.initState();
@@ -38,7 +40,7 @@ class _CartViewState extends State<CartView> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    "Total Rp  ${1200}",
+                    "Total Rp  ${total}",
                     style: GoogleFonts.poppins(
                       textStyle: bodyStyle.copyWith(color: KTextColor),
                     ),
@@ -71,7 +73,7 @@ class _CartViewState extends State<CartView> {
             // ios icon back
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Get.back();
+              Get.toNamed(Routes.HOME);
             },
           ),
         ),
@@ -118,6 +120,7 @@ class _CartViewState extends State<CartView> {
               builder:
                   (BuildContext context, AsyncSnapshot<List<Cart>> snapshot) {
                 if (!snapshot.hasData) {
+                  total = 0;
                   return Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(KPrimaryColor),
@@ -125,13 +128,23 @@ class _CartViewState extends State<CartView> {
                   );
                 }
                 return snapshot.data!.isEmpty
-                    ? Center(
-                        child: Text("Cart is empty"),
-                      )
+                    ? Container(
+                        height: Get.height * 0.8,
+                        child: Center(
+                            child: Text("Cart is empty",
+                                style: GoogleFonts.poppins(
+                                    textStyle: bodyStyle.copyWith(
+                                        color: KTextColor)))))
                     : ListView(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         children: snapshot.data!.map((cart) {
+                          total = snapshot.data!.fold(
+                            0,
+                            (previousValue, element) =>
+                                previousValue +
+                                (element.price! * element.quantity!),
+                          );
                           return Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
@@ -170,7 +183,7 @@ class _CartViewState extends State<CartView> {
                                       Row(
                                         children: [
                                           Text(
-                                            "Rp. ${cart.price}",
+                                            "Rp. ${cart.price! * cart.quantity!}",
                                             style: GoogleFonts.poppins(
                                               textStyle: bodyStyle.copyWith(
                                                   color: KTextColor,
@@ -184,7 +197,6 @@ class _CartViewState extends State<CartView> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          // minus
                                           GestureDetector(
                                             onTap: () {
                                               if (cart.quantity! > 1) {
@@ -192,7 +204,15 @@ class _CartViewState extends State<CartView> {
                                                     cart.quantity! - 1;
                                                 DatabaseHelper.instance
                                                     .updateCart(cart);
-                                                setState(() {});
+                                                setState(() {
+                                                  total = snapshot.data!.fold(
+                                                    0,
+                                                    (previousValue, element) =>
+                                                        previousValue +
+                                                        (element.price! *
+                                                            element.quantity!),
+                                                  );
+                                                });
                                               }
                                             },
                                             child: Container(
@@ -225,7 +245,15 @@ class _CartViewState extends State<CartView> {
                                                   cart.quantity! + 1;
                                               DatabaseHelper.instance
                                                   .updateCart(cart);
-                                              setState(() {});
+                                              setState(() {
+                                                total = snapshot.data!.fold(
+                                                  0,
+                                                  (previousValue, element) =>
+                                                      previousValue +
+                                                      (element.price! *
+                                                          element.quantity!),
+                                                );
+                                              });
                                             },
                                             child: Container(
                                               height: 30,
