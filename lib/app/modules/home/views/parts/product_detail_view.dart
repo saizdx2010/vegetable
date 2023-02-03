@@ -1,11 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vegetable/app/modules/home/views/parts/added_to_cart_view.dart';
-import 'package:vegetable/database/db.dart';
+import 'package:vegetable/database/database.dart';
 import 'package:vegetable/models/vegetable_data.dart';
 
 import '../../../../../components/buttons.dart';
+import '../../../../../models/cart.dart';
 import '../../../../../ui/app_colors.dart';
 import '../../../../../ui/constants.dart';
 import '../../../../../ui/text_styles.dart';
@@ -24,18 +27,13 @@ class _ProductDetailViewState extends State<ProductDetailView> {
       ? Get.find<HomeController>()
       : Get.put(HomeController());
 
-  // open database
-  DB database = DB();
-
   @override
   void initState() {
-    database.open();
     super.initState();
   }
 
   @override
   void dispose() {
-    database.db!.close();
     super.dispose();
   }
 
@@ -64,15 +62,15 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                   child: GestureDetector(
                     child: PrimaryButton(),
                     onTap: () async {
-                      // add to cart
-                      database.db!.rawInsert(
-                          'INSERT INTO cart (name, image, quantity, price) VALUES (?, ?, ?, ?);',
-                          [
-                            widget.vegetables.name,
-                            widget.vegetables.image,
-                            1,
-                            widget.vegetables.price
-                          ]);
+                      await DatabaseHelper.instance.insertCart(
+                        // insert to database
+                        Cart(
+                          name: widget.vegetables.name,
+                          image: widget.vegetables.image,
+                          price: widget.vegetables.price?.toDouble(),
+                          quantity: 1,
+                        ),
+                      );
                       Get.to(() => AddedToCartView());
                     },
                   ),

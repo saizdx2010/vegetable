@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
 
-import 'package:vegetable/app/modules/cart/bindings/cart_binding.dart';
-import 'package:vegetable/app/modules/cart/views/cart_view.dart';
 import 'package:vegetable/app/modules/home/bindings/home_binding.dart';
 import 'package:vegetable/app/modules/home/views/home_view.dart';
 import 'package:vegetable/app/modules/onboard/bindings/onboard_binding.dart';
@@ -24,11 +22,6 @@ class AppPages {
       name: _Paths.ONBOARD,
       page: () => OnboardView(),
       binding: OnboardBinding(),
-    ),
-    GetPage(
-      name: _Paths.CART,
-      page: () => CartView(),
-      binding: CartBinding(),
     ),
   ];
 }

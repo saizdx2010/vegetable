@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vegetable/app/modules/cart/views/parts/payment_success_view.dart';
+import 'package:vegetable/app/modules/parts/payment_success_view.dart';
 
 import '../../../../../ui/app_colors.dart';
 import '../../../../../ui/text_styles.dart';

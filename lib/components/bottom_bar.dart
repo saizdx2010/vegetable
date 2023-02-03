@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vegetable/app/modules/parts/cart_view.dart';
 import 'package:vegetable/ui/app_colors.dart';
 import 'package:vegetable/ui/constants.dart';
 import 'package:vegetable/ui/text_styles.dart';
@@ -53,7 +54,7 @@ class BottomBar extends StatelessWidget {
           GestureDetector(
             onTap: () {
               if (Get.currentRoute != "/cart") {
-                Get.toNamed(Routes.CART);
+                Get.to(CartView());
               }
             },
             child: Container(
