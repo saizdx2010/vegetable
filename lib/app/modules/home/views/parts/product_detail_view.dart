@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -94,7 +92,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
             // ios icon back
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Get.toNamed(Routes.HOME);
+              Get.back();
             },
           ),
         ),

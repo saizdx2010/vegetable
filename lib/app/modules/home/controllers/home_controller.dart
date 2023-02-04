@@ -8,6 +8,8 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
 
   List<Vegetables> vegetables = VegetablesList;
 
+  List<VegetableData> unfilteredVegetables = allVegetables;
+
   // search
   TextEditingController searchController = TextEditingController();
 
@@ -31,28 +33,31 @@ class HomeController extends GetxController with GetTickerProviderStateMixin {
   @override
   void onClose() {}
 
-  // search
-  void search() {
-    if (searchController.text.isNotEmpty) {
-      List<VegetableData> searchVegetables = [];
-      allVegetables.forEach((element) {
-        if (element.name!
-            .toLowerCase()
-            .contains(searchController.text.toLowerCase())) {
-          searchVegetables.add(element);
-        }
-      });
-      allVegetables = searchVegetables;
-    } else if (searchController.text.isEmpty) {
-      allVegetables = allVegetables;
-    }
-    update();
-  }
-
-
   // payment method
   void changePaymentMethod(String method) {
     paymentMethod = method;
+    update();
+  }
+
+  // toggle favorite
+  void toggleFavorite(VegetableData vegetable) {
+    // vegetable.isFavorite = vegetable.isFavorite == false;
+    vegetable.isFavorite == false
+        ? vegetable.isFavorite = true
+        : vegetable.isFavorite = false;
+    update();
+  }
+
+  // create search and when search is empty show all vegetables
+  void searchVegetables(String query) {
+    if (query.isNotEmpty) {
+      allVegetables = allVegetables
+          .where((element) =>
+              element.name!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    } else {
+      allVegetables = unfilteredVegetables;
+    }
     update();
   }
 }

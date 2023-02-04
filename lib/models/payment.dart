@@ -1,16 +1,16 @@
-class Transaction {
+class Payment {
   final double? price;
   final String? paymentMethod;
   final DateTime? date;
 
-  Transaction({
+  Payment({
     this.price,
     this.paymentMethod,
     this.date,
   });
 
-  factory Transaction.fromJson(Map<String, dynamic> json) {
-    return Transaction(
+  factory Payment.fromJson(Map<String, dynamic> json) {
+    return Payment(
       price: json['price'],
       paymentMethod: json['paymentMethod'],
       date: DateTime.parse(json['date']),

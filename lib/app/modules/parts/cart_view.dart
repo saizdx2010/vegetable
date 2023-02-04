@@ -136,10 +136,14 @@ class _CartViewState extends State<CartView> {
                     ? Container(
                         height: Get.height * 0.8,
                         child: Center(
-                            child: Text("Cart is empty",
-                                style: GoogleFonts.poppins(
-                                    textStyle: bodyStyle.copyWith(
-                                        color: KTextColor)))))
+                          child: Text(
+                            "Cart is empty",
+                            style: GoogleFonts.poppins(
+                              textStyle: bodyStyle.copyWith(color: KTextColor),
+                            ),
+                          ),
+                        ),
+                      )
                     : ListView(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,

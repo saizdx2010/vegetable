@@ -4,6 +4,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:vegetable/models/cart.dart';
+import 'package:vegetable/models/payment.dart';
 
 class DatabaseHelper {
   DatabaseHelper._privateConstructor();
@@ -16,33 +17,33 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'Vegetable.db');
+    String path = join(documentsDirectory.path, 'vegetable1.db');
 
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   Future _onCreate(Database db, int version) async {
-    await db.execute('''
+    await db.execute(tableCart);
+    await db.execute(tablePayment);
+  }
 
-    CREATE TABLE cart (
+  // Static
+  static const tableCart = """
+  CREATE TABLE cart (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT,
       image TEXT,
       quantity INTEGER,
-      price DOUBLE NOT NULL,
-    );
+      price DOUBLE NOT NULL
+    );""";
 
-    CREATE TABLE transaction (
+  static const tablePayment = """
+  CREATE TABLE payment (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       price DOUBLE NOT NULL,
       paymentMethod TEXT,
-      date TEXT,
-
-    );
-
-
-    ''');
-  }
+      date TEXT
+    );""";
 
   Future<List<Cart>> getCart() async {
     Database db = await instance.database;
@@ -60,12 +61,10 @@ class DatabaseHelper {
     return await db.insert('cart', cart.toJson());
   }
 
-  // // insert transaction
-  // Future<int> insertTransaction(Transaction transaction) async {
-  //   Database db = await instance.database;
-  //   return await db.insert('transaction', transaction.toJson());
-  // }
-
+  Future<int> insertPayment(Payment payment) async {
+    Database db = await instance.database;
+    return await db.insert('payment', payment.toJson());
+  }
 
   Future<int> updateCart(Cart cart) async {
     Database db = await instance.database;

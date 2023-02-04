@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vegetable/database/database.dart';
 import 'package:vegetable/ui/constants.dart';
 import 'package:vegetable/ui/ui_helpers.dart';
 
 import '../../../../../components/buttons.dart';
 import '../../../../../ui/app_colors.dart';
 import '../../../../../ui/text_styles.dart';
+import '../../../models/payment.dart';
 import '../home/controllers/home_controller.dart';
 import 'loading_payment_view.dart';
 
@@ -31,7 +33,15 @@ class PaymentView extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       child: PrimaryButton(),
-                      onTap: () {
+                      onTap: () async {
+                        // insert transaction
+                        await DatabaseHelper.instance.insertPayment(
+                          Payment(
+                            price: controller.totalPrice,
+                            paymentMethod: controller.paymentMethod,
+                            date: DateTime.now(),
+                          ),
+                        );
                         Get.to(() => LoadingPayment());
                       },
                     ),

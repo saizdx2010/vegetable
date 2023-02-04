@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:vegetable/app/modules/home/views/home_view.dart';
 import 'package:vegetable/app/modules/home/views/parts/product_detail_view.dart';
 import 'package:vegetable/app/routes/app_pages.dart';
 import 'package:vegetable/models/vegetable_data.dart';
@@ -24,6 +23,10 @@ class SearchView extends StatelessWidget {
       child: Scaffold(
         body: GetBuilder<HomeController>(
           init: HomeController(),
+          dispose: (_) {
+            controller.searchController.clear();
+            allVegetables = controller.unfilteredVegetables;
+          },
           initState: (_) {},
           builder: (_) {
             return Column(
@@ -67,7 +70,7 @@ class SearchBar extends StatelessWidget {
               color: KPrimaryColor,
             ),
             onPressed: () {
-              Get.toNamed(Routes.HOME);
+              Get.offAllNamed(Routes.HOME);
             },
           ),
         ),
@@ -95,12 +98,7 @@ class SearchBar extends StatelessWidget {
                     controller: controller.searchController,
                     // search all vegetables
                     onChanged: (value) {
-                      // allVegetables = allVegetables
-                      //     .where((element) =>
-                      //         element.name!.toLowerCase().contains(value))
-                      //     .toList();
-                      // controller.update();
-                      controller.search();
+                      controller.searchVegetables(value);
                     },
                     decoration: InputDecoration(
                       border: InputBorder.none,

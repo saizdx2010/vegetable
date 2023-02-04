@@ -22,110 +22,138 @@ class HomeView extends GetView<HomeController> {
       child: Scaffold(
         backgroundColor: Colors.grey.shade200,
         bottomNavigationBar: BottomBar(),
-        body: Column(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: Get.width,
-                  height: 120,
-                  color: KPrimaryColor,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Vegetable",
-                          style: GoogleFonts.poppins(
-                            textStyle: headingStyle,
-                          ),
-                        ),
-                        Icon(
-                          Icons.notifications,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
-                  // input for search
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() => SearchView());
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(top: 90, left: 16, right: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(1),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Icon(
-                            Icons.search,
-                            color: KPrimaryColor,
-                          ),
-                        ),
-                        Expanded(
-                          child: TextField(
-                            enabled: false,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Search",
-                              hintStyle: GoogleFonts.poppins(
-                                textStyle: bodyStyle.copyWith(
-                                  color: KTextColor.withOpacity(0.5),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            verticalSpaceMedium,
-            TabBar(
-              controller: controller.tabController,
-              overlayColor: MaterialStateProperty.all(Colors.transparent),
-              indicatorColor: KSecondaryColor,
-              indicatorSize: TabBarIndicatorSize.label,
-              tabs: [
-                createTabBar("Vegetables"),
-                createTabBar("Fruits"),
-                createTabBar("Dry Fruits"),
-              ],
-            ),
-            verticalSpaceMedium,
-            Expanded(
-              child: TabBarView(
-                controller: controller.tabController,
+        body: GetBuilder<HomeController>(
+            init: HomeController(),
+            builder: (_) {
+              return Column(
                 children: [
-                  // Vegetable List
-                  VegetableList(controller: controller),
-                  Center(child: Text("Hello")),
-                  Center(child: Text("Hello")),
+                  HeaderWidget(),
+                  verticalSpaceMedium,
+                  TabBar(
+                    controller: controller.tabController,
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    indicatorColor: KSecondaryColor,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    tabs: [
+                      createTabBar("Vegetables"),
+                      createTabBar("Fruits"),
+                      createTabBar("Dry Fruits"),
+                    ],
+                  ),
+                  verticalSpaceMedium,
+                  Expanded(
+                    child: TabBarView(
+                      controller: controller.tabController,
+                      children: [
+                        // Vegetable List
+                        VegetableList(controller: controller),
+                        Center(
+                            child: Text(
+                          "No Fruits",
+                          style: GoogleFonts.poppins(
+                            textStyle: headingStyle.copyWith(
+                                fontSize: 18, color: KTextColor),
+                          ),
+                        )),
+                        Center(
+                            child: Text(
+                          "No Dry Fruits",
+                          style: GoogleFonts.poppins(
+                            textStyle: headingStyle.copyWith(
+                                fontSize: 18, color: KTextColor),
+                          ),
+                        )),
+                      ],
+                    ),
+                  ),
                 ],
-              ),
-            ),
-          ],
-        ),
+              );
+            }),
       ),
+    );
+  }
+}
+
+class HeaderWidget extends StatelessWidget {
+  const HeaderWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: Get.width,
+          height: 120,
+          color: KPrimaryColor,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Vegetable",
+                  style: GoogleFonts.poppins(
+                    textStyle: headingStyle,
+                  ),
+                ),
+                Icon(
+                  Icons.notifications,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ),
+          // input for search
+        ),
+        GestureDetector(
+          onTap: () {
+            Get.to(() => SearchView());
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 90, left: 16, right: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(1),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Icon(
+                    Icons.search,
+                    color: KPrimaryColor,
+                  ),
+                ),
+                Expanded(
+                  child: TextField(
+                    enabled: false,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Search",
+                      hintStyle: GoogleFonts.poppins(
+                        textStyle: bodyStyle.copyWith(
+                          color: KTextColor.withOpacity(0.5),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -204,7 +232,11 @@ class VegetableList extends StatelessWidget {
                                   top: 8,
                                   right: 8,
                                   child: GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      // toggle favorite
+                                      controller
+                                          .toggleFavorite(singleVegetables);
+                                    },
                                     child: Container(
                                       height: 25,
                                       width: 25,
