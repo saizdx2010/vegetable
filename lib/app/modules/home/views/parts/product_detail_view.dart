@@ -59,7 +59,9 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                 // add to cart
                 Expanded(
                   child: GestureDetector(
-                    child: PrimaryButton(),
+                    child: PrimaryButton(
+                      buttonText: "Add to Cart",
+                    ),
                     onTap: () async {
                       await DatabaseHelper.instance.insertCart(
                         // insert to database

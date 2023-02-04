@@ -17,7 +17,7 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'vegetable1.db');
+    String path = join(documentsDirectory.path, 'vegetable2.db');
 
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
@@ -42,7 +42,8 @@ class DatabaseHelper {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       price DOUBLE NOT NULL,
       paymentMethod TEXT,
-      date TEXT
+      date TEXT,
+      status TEXT
     );""";
 
   Future<List<Cart>> getCart() async {
@@ -75,5 +76,10 @@ class DatabaseHelper {
   Future<int> deleteCart(String name) async {
     Database db = await instance.database;
     return await db.delete('cart', where: 'name = ?', whereArgs: [name]);
+  }
+
+  Future<int> deleteAllCart() async {
+    Database db = await instance.database;
+    return await db.delete('cart');
   }
 }

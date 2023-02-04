@@ -32,7 +32,9 @@ class PaymentView extends StatelessWidget {
                 children: [
                   Expanded(
                     child: GestureDetector(
-                      child: PrimaryButton(),
+                      child: PrimaryButton(
+                        buttonText: "Pay Now",
+                      ),
                       onTap: () async {
                         // insert transaction
                         await DatabaseHelper.instance.insertPayment(
@@ -40,8 +42,11 @@ class PaymentView extends StatelessWidget {
                             price: controller.totalPrice,
                             paymentMethod: controller.paymentMethod,
                             date: DateTime.now(),
+                            status: "Paid",
                           ),
                         );
+                        await DatabaseHelper.instance.deleteAllCart();
+                        controller.totalPrice = 0;
                         Get.to(() => LoadingPayment());
                       },
                     ),

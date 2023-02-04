@@ -5,9 +5,12 @@ import '../ui/app_colors.dart';
 import '../ui/text_styles.dart';
 
 class PrimaryButton extends StatelessWidget {
-  const PrimaryButton({
+  PrimaryButton({
     Key? key,
+    this.buttonText,
   }) : super(key: key);
+
+  String? buttonText;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,7 @@ class PrimaryButton extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          "Add to Cart",
+          "${buttonText ?? "Button"}",
           style: GoogleFonts.poppins(
             textStyle: bodyStyle.copyWith(color: KTextLightColor),
           ),
