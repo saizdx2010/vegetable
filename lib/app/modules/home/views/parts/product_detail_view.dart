@@ -72,6 +72,8 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           quantity: 1,
                         ),
                       );
+
+                      controller.totalPrice += widget.vegetables.price!;
                       Get.to(() => AddedToCartView());
                     },
                   ),
